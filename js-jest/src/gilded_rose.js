@@ -32,21 +32,13 @@ const ItemHandler = {
     item.sellIn -= 1;
   },
   conjured: (item) => {
-    if (item.sellIn > 0) {
-      item.quality -= 2;
-    } else {
-      item.quality -= 4;
-    }
-    if (item.quality < 0) {
-      item.quality = 0;
-    }
-    item.sellIn -= 1;
+    ItemHandler.default(item, 2);
   },
-  default: (item) => {
+  default: (item, decrement = 1) => {
     if (item.sellIn > 0) {
-      item.quality -= 1;
+      item.quality -= decrement;
     } else {
-      item.quality -= 2;
+      item.quality -= decrement * 2;
     }
     if (item.quality < 0) {
       item.quality = 0;
