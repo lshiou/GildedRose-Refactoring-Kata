@@ -45,12 +45,6 @@ const ItemHandler = {
   },
 };
 
-const SpecialtyItemName = [
-  "Aged Brie",
-  "Sulfuras, Hand of Ragnaros",
-  "Backstage passes to a TAFKAL80ETC concert",
-];
-
 class Shop {
   constructor(items = []) {
     this.items = items;
@@ -59,7 +53,9 @@ class Shop {
   updateQuality() {
     for (let i = 0; i < this.items.length; i++) {
       const item = this.items[i];
-      const handlerName = SpecialtyItemName.includes(item.name)
+      // Object.hasOwn is more performant than Object.keys(ItemHandler).includes
+      // because it doesn't create an array of keys.
+      const handlerName = Object.hasOwn(ItemHandler, item.name)
         ? item.name
         : "default";
 
