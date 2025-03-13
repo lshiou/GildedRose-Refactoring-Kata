@@ -35,6 +35,33 @@ describe("Gilded Rose", function () {
   });
 
   describe("special item behavior", function () {
+    describe("Conjured items", function () {
+      it("should have a quality value that decreases twice as fast", function () {
+        const gildedRose = new Shop([
+          new Item("conjured plate", 5, 10),
+          new Item("Conjured cup", 10, 20),
+          new Item("CONJURED HAT", 15, 30),
+        ]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].sellIn).toBe(4);
+        expect(items[0].quality).toBe(8);
+
+        expect(items[1].quality).toBe(18);
+        expect(items[2].quality).toBe(28);
+      });
+
+      it("should degrade in quality twice as fast after sellIn date has passed", function () {
+        const gildedRose = new Shop([new Item("conjured plate", 0, 10)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).toBe(6);
+      });
+      it("should not have a quality value that is negative", function () {
+        const gildedRose = new Shop([new Item("conjured plate", 10, 1)]);
+        const items = gildedRose.updateQuality();
+        expect(items[0].quality).toBe(0);
+      });
+    });
+
     describe("Aged Brie", function () {
       it("should increase in quality as it gets older", function () {
         const gildedRose = new Shop([new Item("Aged Brie", 10, 20)]);
